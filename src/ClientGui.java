@@ -53,7 +53,7 @@ public class ClientGui extends JFrame {
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             writer = new PrintWriter(socket.getOutputStream(), true);
         } catch(UnknownHostException ex) {
-            System.out.println("Unknonw host: " + ex.getLocalizedMessage());
+            System.out.println("Unknown host: " + ex.getLocalizedMessage());
         } catch (IOException ex) {
             System.out.println("Connection error: " + ex.getMessage());
         }

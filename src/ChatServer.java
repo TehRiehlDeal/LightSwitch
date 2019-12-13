@@ -3,6 +3,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,23 +24,14 @@ public class ChatServer
                 InetAddress IpAddress = client.getInetAddress();
                 System.out.println("Client connected from " + IpAddress);
                 new Thread(new ClientThread(client)).start();
-
-                /**System.out.println("The server is running...");
-
-                Socket client = server.accept();
-
-                InetAddress IpAddress = client.getInetAddress();
-                System.out.println("Client connected from " + IpAddress);
-
-                Runnable thread = new ClientThread(client);
-
-                new Thread(thread).start();
-                //thread.start();*/
             } catch (IOException ex) {
                 System.out.println("Error reader/writing from/to file: " + ex.getMessage());
             }
             try(ServerSocket server = new ServerSocket(DEVICE_PORT)) {
-
+                Socket device = server.accept();
+                InetAddress IpAddress = device.getInetAddress();
+                System.out.println("Device connected from " + IpAddress);
+                new Thread(new DeviceThread(device)).start();
             } catch (IOException ex) {
                 System.out.println("Error reader/writing from/to file: " + ex.getMessage());
             }
