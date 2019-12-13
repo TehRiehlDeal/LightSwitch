@@ -13,9 +13,8 @@ public class ChatServer
     public static final int DEVICE_PORT = 9001;
 
     private static List<String> users = new ArrayList<String>();
-    private static List<PrintWriter> clients = new ArrayList<PrintWriter>();
-
     private static List<String> devices = new ArrayList<String>();
+    private static List<PrintWriter> clients = new ArrayList<PrintWriter>();
 
     public static void main(String[] args) {
         while(true) {
@@ -50,12 +49,31 @@ public class ChatServer
         }
     }
 
+    private static boolean isDevice(String name){
+        synchronized (devices){
+            if(name == null || name.equals("")){
+                throw new IllegalStateException("User name cannot be empty");
+            }
+            return users.contains(name);
+        }
+    }
+
     public static boolean addUser(String name) {
         synchronized (users) {
             if(isUser(name)) {
                 return false;
             }
             users.add(name);
+            return true;
+        }
+    }
+
+    public static boolean addDevice(String name) {
+        synchronized (devices){
+            if(isDevice(name)){
+                return false;
+            }
+            devices.add(name);
             return true;
         }
     }

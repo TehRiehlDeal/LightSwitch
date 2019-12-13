@@ -10,19 +10,22 @@ import java.rmi.UnknownHostException;
 
 
 public class DeviceProcessing {
-    private BufferedReader reader;
-    private PrintWriter writer;
+    private static BufferedReader reader;
+    private static PrintWriter writer;
+
+    public DeviceProcessing(){
+        createServerConnection();
+    }
 
     private void createServerConnection() {
-        String serverIP = JOptionPane.showInputDialog("Enter a remote IP address");
 
         try {
-            Socket socket = new Socket(serverIP, ChatServer.CLIENT_PORT);
+            Socket socket = new Socket("127.0.0.1", 9001);
 
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             writer = new PrintWriter(socket.getOutputStream(), true);
         } catch(UnknownHostException ex) {
-            System.out.println("Unknonw host: " + ex.getLocalizedMessage());
+            System.out.println("Unknown host: " + ex.getLocalizedMessage());
         } catch (IOException ex) {
             System.out.println("Connection error: " + ex.getMessage());
         }
@@ -38,11 +41,19 @@ public class DeviceProcessing {
                     writer.println("Device1");
                 } else if(serverMsg.contains("Device1 on")) {
                     //Flip the relay
+                    System.out.println("Flipping Switch!");
+                } else {
+                    System.out.println(serverMsg);
                 }
             }
             catch (IOException e) {
                 System.out.println("Error receiving server message: " + e.getMessage());
             }
         }
+    }
+
+    public static void main(String[] args) {
+        DeviceProcessing con = new DeviceProcessing();
+        con.processingLoop();
     }
 }

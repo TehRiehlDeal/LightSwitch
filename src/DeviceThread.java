@@ -7,7 +7,7 @@ import java.net.Socket;
 public class DeviceThread implements Runnable {
     private Socket deviceSocket;
 
-    public DeviceThread(Socket deviceSocketSocket) {
+    public DeviceThread(Socket deviceSocket) {
         this.deviceSocket = deviceSocket;
     }
 
@@ -23,7 +23,7 @@ public class DeviceThread implements Runnable {
             do {
                 writer.println("Please enter a name");
                 name = reader.readLine();
-            } while(!ChatServer.addUser(name));
+            } while(!ChatServer.addDevice(name));
 
             writer.println(name + " has been registered successfully.");
             writer.println("Type a message (type \"exit\" to exit)");
